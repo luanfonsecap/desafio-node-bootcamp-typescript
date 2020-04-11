@@ -64,9 +64,11 @@ class RepositoriesController {
 
     if (repository) {
       repository.likes++;
+    } else {
+      return res.status(400).json({ error: "Repository does not exist" });
     }
 
-    return res.json(repository);
+    return res.json({ likes: repository.likes });
   }
 }
 
