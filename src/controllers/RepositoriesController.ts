@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { uuid } from "uuidv4";
+import { Request, Response } from 'express'
+import { uuid } from 'uuidv4'
 
-interface IRepository {
+interface Repository {
   id: string;
   title: string;
   url: string;
@@ -9,67 +9,67 @@ interface IRepository {
   likes: number;
 }
 
-let repositories: Array<IRepository> = [];
+let repositories: Array<Repository> = []
 
 class RepositoriesController {
-  public index(req: Request, res: Response) {
-    res.json(repositories);
-  }
+	public index (req: Request, res: Response): Response {
+		return res.json(repositories)
+	}
 
-  public store(req: Request, res: Response): Response {
-    const { title, url, techs } = req.body;
+	public store (req: Request, res: Response): Response {
+		const { title, url, techs } = req.body
 
-    const repository: IRepository = {
-      id: uuid(),
-      title,
-      url,
-      techs,
-      likes: 0,
-    };
+		const repository: Repository = {
+			id: uuid(),
+			title,
+			url,
+			techs,
+			likes: 0
+		}
 
-    repositories.push(repository);
+		repositories.push(repository)
 
-    return res.json(repository);
-  }
+		return res.json(repository)
+	}
 
-  public update(req: Request, res: Response): Response {
-    const { id } = req.params;
-    const { title, url, techs } = req.body;
+	public update (req: Request, res: Response): Response {
+		const { id } = req.params
+		const { title, url, techs } = req.body
 
-    let index = repositories.findIndex((repo) => repo.id === id);
+		const index = repositories.findIndex((repo) => repo.id === id)
 
-    repositories[index] = {
-      id,
-      title,
-      url,
-      techs,
-      likes: repositories[index].likes,
-    };
+		repositories[index] = {
+			id,
+			title,
+			url,
+			techs,
+			likes: repositories[index].likes
+		}
 
-    return res.json(repositories[index]);
-  }
+		return res.json(repositories[index])
+	}
 
-  public destroy(req: Request, res: Response): Response {
-    const { id } = req.params;
+	public destroy (req: Request, res: Response): Response {
+		const { id } = req.params
 
-    repositories = repositories.filter((repo) => repo.id !== id);
+		repositories = repositories.filter((repo) => repo.id !== id)
 
-    return res.status(204).send();
-  }
+		return res.status(204).send()
+	}
 
-  public like(req: Request, res: Response): Response {
-    const { id } = req.params;
+	public like (req: Request, res: Response): Response {
+		const { id } = req.params
 
-    const repository = repositories.find((repo) => repo.id === id);
+		const repository = repositories.find((repo) => repo.id === id)
 
-    if (repository) {
-      repository.likes++;
-    } else {
-      return res.status(400).json({ error: "Repository does not exist" });
-    }
+		if (repository) {
+			repository.likes++
+		} else {
+			return res.status(400).json({ error: 'Repository does not exist' })
+		}
 
-    return res.json({ likes: repository.likes });
-  }
+		return res.json({ likes: repository.likes })
+	}
 }
 
-export default new RepositoriesController();
+export default new RepositoriesController()
