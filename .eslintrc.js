@@ -20,5 +20,8 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["@typescript-eslint"],
-  rules: {},
+  rules: {
+    indent: [2, "tab"],
+    "no-tabs": 0,
+  },
 };
